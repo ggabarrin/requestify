@@ -1,6 +1,32 @@
 from urlparse import urlparse
 
 
+PYTHON_TEMPLATE = """
+import requests
+
+# headers
+headers = {headers}
+
+# data
+data = r\"\"\"{data}\"\"\"
+
+# cookies
+cookies = {cookies}
+
+# Prepare and send request
+req = requests.Request(
+    method="{method}",
+    url="{scheme}://{host}:{port}{uri}",
+    headers=headers,
+    data=data,
+    cookies=cookies,
+)
+prepared_req = req.prepare()
+session = requests.Session()
+resp = session.send(prepared_req)
+"""
+
+
 def parse_http_request(raw_request):
     """
     Parse raw HTTP request
@@ -108,6 +134,27 @@ def parse_http_request(raw_request):
     }
 
 
+def generate_request_code(request):
+    """
+    Generate python code that makes HTTP request
+
+    :param request: dictionary with request data
+    :returns: string containing generated python code
+    """
+
+    generated_code = PYTHON_TEMPLATE.format(
+        headers=request["headers"],
+        data=request["data"],
+        cookies=request["cookies"],
+        method=request["method"],
+        scheme=request["scheme"],
+        host=request["host"],
+        port=request["port"],
+        uri=request["uri"],
+    )
+    return generated_code
+
+
 def main():
     raw_http_request = r"""GET / HTTP/1.1
 Host: localhost:8080
@@ -119,7 +166,10 @@ DNT: 1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1"""
 
-    print parse_http_request(raw_http_request)
+    parsed_request = parse_http_request(raw_http_request)
+    if parsed_request:
+        generated_code = generate_request_code(parsed_request)
+        print generated_code
 
 
 if __name__ == '__main__':
