@@ -1,0 +1,35 @@
+<?php
+
+// headers
+$headers = array(
+{% for header in headers.items() %} array('{{ header[0] }}', '{{ header[1] }}'),
+{% endfor %});
+
+// data
+{% if data != None %}
+$data = "{{ data.replace("\\","\\\\").replace('"','\\"') }}";
+{% else %}
+$data = "";
+{% endif %}
+
+// cookies
+$cookies = array(
+{% for cookie in cookies.items() %} array('{{ cookie[0] }}', '{{ cookie[1] }}'),
+{% endfor %}
+);
+
+// prepare and send request
+$r = new HttpRequest('{{ scheme }}://{{ host }}:{{ port }}{{ uri }}', HttpRequest::METH_{{ method }});
+$r->addHeaders($headers);
+$r->addRawPostData($data);
+$r->addCookies($cookies);
+
+try {
+    $r->send();
+    //echo $r->getResponseCode();
+    //echo $r->getResponseBody());
+} catch (HttpException $ex) {
+    echo $ex;
+}
+
+?>

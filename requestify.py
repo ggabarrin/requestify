@@ -3,6 +3,7 @@ from jinja2 import Environment, PackageLoader
 
 
 PYTHON_REQUESTS_TEMPLATE = "python_requests.txt"
+PHP_TEMPLATE = "php.txt"
 
 
 def parse_http_request(raw_request):
