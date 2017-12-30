@@ -1,0 +1,26 @@
+import requests
+
+# Headers
+headers = {
+{% for header_name, header_value in headers.iteritems() %}    '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
+{% endfor %}}
+
+# Data
+data = r"""{{ data or '' }}"""
+
+# Cookies
+cookies = {
+{% for cookie_name, cookie_value in cookies.iteritems() %}    '{{ cookie_name.replace("'","\\'") }}': '{{ cookie_value.replace("'","\\'") }}',
+{% endfor %}}
+
+# Prepare and send request
+req = requests.Request(
+    method="{{ method }}",
+    url="{{ scheme }}://{{ host }}:{{ port }}{{ uri }}",
+    headers=headers,
+    data=data,
+    cookies=cookies,
+)
+prepared_req = req.prepare()
+session = requests.Session()
+resp = session.send(prepared_req)

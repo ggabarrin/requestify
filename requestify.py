@@ -1,30 +1,8 @@
 from urlparse import urlparse
+from jinja2 import Environment, PackageLoader
 
 
-PYTHON_TEMPLATE = """
-import requests
-
-# headers
-headers = {headers}
-
-# data
-data = r\"\"\"{data}\"\"\"
-
-# cookies
-cookies = {cookies}
-
-# Prepare and send request
-req = requests.Request(
-    method="{method}",
-    url="{scheme}://{host}:{port}{uri}",
-    headers=headers,
-    data=data,
-    cookies=cookies,
-)
-prepared_req = req.prepare()
-session = requests.Session()
-resp = session.send(prepared_req)
-"""
+PYTHON_REQUESTS_TEMPLATE = "python_requests.txt"
 
 
 def parse_http_request(raw_request):
@@ -134,15 +112,19 @@ def parse_http_request(raw_request):
     }
 
 
-def generate_request_code(request):
+def generate_request_code(request, selected_template):
     """
     Generate python code that makes HTTP request
 
     :param request: dictionary with request data
     :returns: string containing generated python code
     """
+    env = Environment(
+        loader=PackageLoader('requestify', 'templates'),
+    )
+    template = env.get_template(selected_template)
 
-    generated_code = PYTHON_TEMPLATE.format(
+    return template.render(
         headers=request["headers"],
         data=request["data"],
         cookies=request["cookies"],
@@ -152,7 +134,6 @@ def generate_request_code(request):
         port=request["port"],
         uri=request["uri"],
     )
-    return generated_code
 
 
 def main():
@@ -168,7 +149,7 @@ Upgrade-Insecure-Requests: 1"""
 
     parsed_request = parse_http_request(raw_http_request)
     if parsed_request:
-        generated_code = generate_request_code(parsed_request)
+        generated_code = generate_request_code(parsed_request, PYTHON_REQUESTS_TEMPLATE)
         print generated_code
 
 
