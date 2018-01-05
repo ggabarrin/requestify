@@ -1,3 +1,4 @@
+import optparse
 import sys
 from jinja2 import Environment, PackageLoader
 
@@ -32,9 +33,23 @@ def generate_request_code(request, selected_template):
 
 
 def main():
+    # Menu
+    parser = optparse.OptionParser('usage %prog -i <input_file>')
+    parser.add_option('-i', '--input', dest='input_file', type='string', help='specify input file containing raw HTTP request')
+    (options, args) = parser.parse_args()
+
+    # Input file
+    if not options.input_file:
+        print parser.usage
+        exit(0)
+
     # Read and parse raw HTTP request
-    file_path = sys.argv[1]
-    raw_http_request = "".join(open(file_path, "r").readlines())
+    try:
+        raw_http_request = "".join(open(options.input_file, "r").readlines())
+    except:
+        print "Error while reading file."
+        exit(0)
+
     print raw_http_request
     request = HTTPRequest(raw_http_request)
     if request:
