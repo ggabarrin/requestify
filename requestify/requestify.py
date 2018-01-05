@@ -5,16 +5,24 @@ from jinja2 import Environment, PackageLoader
 from http_request import HTTPRequest
 
 
-PYTHON_REQUESTS_TEMPLATE = "python_requests.txt"
-PHP_TEMPLATE = "php.txt"
+LANGUAGES = {
+    "python-requests": {
+        "description": "Python script using 'requests' module",
+        "template_file": "python_requests.txt",
+    },
+    "php": {
+        "description": "PHP script",
+        "template_file": "php.txt",
+    },
+}
 
 
 def generate_request_code(request, selected_template):
     """
-    Generate python code that makes HTTP request
+    Generate script that makes HTTP request
 
-    :param request: dictionary with request data
-    :returns: string containing generated python code
+    :param request: request object containing request information
+    :returns: string containing generated script
     """
     env = Environment(
         loader=PackageLoader('requestify', 'templates'),
@@ -36,11 +44,22 @@ def main():
     # Menu
     parser = optparse.OptionParser('usage %prog -i <input_file>')
     parser.add_option('-i', '--input', dest='input_file', type='string', help='specify input file containing raw HTTP request')
+    parser.add_option('-l', '--language', dest='lang', type='string', help='specify programming language of the output script', default="python-requests")
     (options, args) = parser.parse_args()
 
     # Input file
     if not options.input_file:
         print parser.usage
+        exit(0)
+
+    # Configure output script template
+    lang = LANGUAGES.get(options.lang, None)
+    if not lang:
+        # Show list of availabe languages
+        print "Invalid language option. Please select one of the available languages."
+        for language, data in LANGUAGES.iteritems():
+            print "[+] {}: {}".format(language, data["description"])
+
         exit(0)
 
     # Read and parse raw HTTP request
