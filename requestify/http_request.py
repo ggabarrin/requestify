@@ -28,7 +28,7 @@ class HTTPRequest(BaseHTTPRequestHandler):
 
         # Path
         if self.path.index("/") == 0:  # Relative URI
-            print "Relative URI detected. Please enter scheme, hostname and port to generate URL"
+            print "[*] Relative URI detected. Please enter scheme, hostname and port to generate URL"
             host_header = self.headers.get("host", None)
             self.port = None
             if host_header:
@@ -38,22 +38,22 @@ class HTTPRequest(BaseHTTPRequestHandler):
                     self.host = host_header.split(":")[0]
                     self.port = int(host_header.split(":")[1])
 
-            self.scheme = raw_input("Scheme (http/https): ")
+            self.scheme = raw_input("[+] Scheme (http/https): ")
             if self.host:
-                hostname_input = raw_input("Hostname '{}' detected in 'Host' header. Use this hostname? [Y/n] ".format(self.host))
+                hostname_input = raw_input("[+] Hostname '{}' detected in 'Host' header. Use this hostname? [Y/n] ".format(self.host))
                 if hostname_input == "n" or hostname_input == "no":
                     self.host = None
 
             if not self.host:
-                self.host = raw_input("Enter hostname (e.g. www.wikipedia.org): ")
+                self.host = raw_input("[+] Enter hostname (e.g. www.wikipedia.org): ")
 
             if self.port:
-                port_input = raw_input("Port '{}' detected in 'Host' header. Use this port? [Y/n] ".format(self.port))
+                port_input = raw_input("[+] Port '{}' detected in 'Host' header. Use this port? [Y/n] ".format(self.port))
                 if port_input == "n" or port_input == "no":
                     self.port = None
 
             if not self.port:
-                self.port = int(raw_input("Enter port (e.g. 80, 443, ..): "))
+                self.port = int(raw_input("[+] Enter port (e.g. 80, 443, ..): "))
 
         else:  # Absolute URI
             parsed_url = urlparse(self.path)

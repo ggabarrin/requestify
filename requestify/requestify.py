@@ -15,6 +15,7 @@ LANGUAGES = {
         "template_file": "php.txt",
     },
 }
+SEPARATOR = "#" * 40
 
 
 def generate_request_code(request, selected_template):
@@ -52,30 +53,36 @@ def main():
         print parser.usage
         exit(0)
 
+    print "[*] Input file: {}".format(options.input_file)
+
     # Configure output script template
     lang = LANGUAGES.get(options.lang, None)
     if not lang:
         # Show list of availabe languages
-        print "Invalid language option. Please select one of the available languages."
+        print "[*] Invalid language option. Please select one of the available languages."
         for language, data in LANGUAGES.iteritems():
             print "[+] {}: {}".format(language, data["description"])
 
         exit(0)
+    print "[*] Output script language: {}".format(options.lang)
 
     # Read and parse raw HTTP request
     try:
         raw_http_request = "".join(open(options.input_file, "r").readlines())
     except:
-        print "Error while reading file."
+        print "[*] Error while reading raw HTTP request file."
         exit(0)
 
+    print "\n{0} BEGIN RAW HTTP REQUEST {0} \n".format(SEPARATOR)
     print raw_http_request
+    print "\n{0} END RAW HTTP REQUEST {0} \n".format(SEPARATOR)
     request = HTTPRequest(raw_http_request)
     if request:
         # Generate source code that makes request
-        generated_code = generate_request_code(request, PYTHON_REQUESTS_TEMPLATE)
+        generated_code = generate_request_code(request, lang["template_file"])
+        print "\n{0} BEGIN GENERATED SCRIPT {0}\n".format(SEPARATOR)
         print generated_code
-
+        print "\n{0} END GENERATED SCRIPT {0}\n".format(SEPARATOR)
 
 if __name__ == '__main__':
     main()
