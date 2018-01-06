@@ -1,4 +1,6 @@
+import errno
 import optparse
+import os
 import sys
 from jinja2 import Environment, PackageLoader
 
@@ -45,6 +47,7 @@ def main():
     # Menu
     parser = optparse.OptionParser('usage %prog -i <input_file>')
     parser.add_option('-i', '--input', dest='input_file', type='string', help='specify input file containing raw HTTP request')
+    parser.add_option('-o', '--output', dest='output_file', type='string', help='specify output file')
     parser.add_option('-l', '--language', dest='lang', type='string', help='specify programming language of the output script', default="python-requests")
     (options, args) = parser.parse_args()
 
@@ -54,6 +57,20 @@ def main():
         exit(0)
 
     print "[*] Input file: {}".format(options.input_file)
+
+    # Output file
+    output_file = None
+    if options.output_file is not None:
+        if os.path.dirname(options.output_file):
+            if not os.path.exists(os.path.dirname(options.output_file)):
+                try:
+                    os.makedirs(os.path.dirname(options.output_file))
+                except OSError as e:  # Guard against race condition
+                    if e.errno != errno.EEXIST:
+                        raise
+
+        print "[*] Output file: {}".format(options.input_file)
+        output_file = open(options.output_file, "w")
 
     # Configure output script template
     lang = LANGUAGES.get(options.lang, None)
@@ -83,6 +100,11 @@ def main():
         print "\n{0} BEGIN GENERATED SCRIPT {0}\n".format(SEPARATOR)
         print generated_code
         print "\n{0} END GENERATED SCRIPT {0}\n".format(SEPARATOR)
+
+        if output_file:
+            output_file.write(generated_code)
+            output_file.close()
+
 
 if __name__ == '__main__':
     main()
