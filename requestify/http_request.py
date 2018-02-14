@@ -21,9 +21,9 @@ class HTTPRequest(BaseHTTPRequestHandler):
         raw_cookies = self.headers.pop("cookie", None)
         if raw_cookies:
             for raw_cookie in raw_cookies.split(";"):
-                cookie_parts = request_header.split("=")
+                cookie_parts = raw_cookie.split("=")
                 cookie_name = cookie_parts[0].strip()
-                cookie_value = cookie_parts[1:].strip()
+                cookie_value = "".join(cookie_parts[1:]).strip()
                 self.cookies[cookie_name] = cookie_value
 
         # Path
