@@ -13,7 +13,7 @@ LANGUAGES = {
         "template_file": "python_requests.txt",
     },
     "nodejs": {
-        "description": "Node.js script using 'http' and 'https' native modules",
+        "description": " Node.js script using 'request' module",
         "template_file": "nodejs.txt",
     },
     "php": {
