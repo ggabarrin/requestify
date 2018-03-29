@@ -8,12 +8,12 @@ from http_request import HTTPRequest
 
 
 LANGUAGES = {
-    "python-requests": {
+    "python": {
         "description": "Python script using 'requests' module",
-        "template_file": "python_requests.txt",
+        "template_file": "python.txt",
     },
     "nodejs": {
-        "description": " Node.js script using 'request' module",
+        "description": "Node.js script using 'request' module",
         "template_file": "nodejs.txt",
     },
     "php": {

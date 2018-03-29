@@ -3,7 +3,7 @@
 Requestify parses a raw HTTP request and generates source code in different languages (templates) that makes the parsed request.
 
 Available templates:
-* `python-requests`: Python script using 'requests' module
+* `python`: Python script using 'requests' module
 * `php`: PHP script
 * `nodejs`: Node.js script using 'request' module
 
