@@ -1,0 +1,39 @@
+{{ scheme }} = require('{{ scheme }}')
+
+// prepare headers
+# Headers
+headers = {
+{% for header_name, header_value in headers.iteritems() %}  '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
+{% endfor %}}
+
+// prepare request
+var options = {
+  host: '{{ host }}',
+  port: {{ port }},
+  path: '{{ uri }}',
+  method: '{{ method }}',
+  headers: headers
+};
+
+// callback function for response
+var req = {{ scheme }}.request(options, function(res) {
+  // console.log(res.statusCode);
+
+  /*
+  res.setEncoding('utf8');
+  res.on('data', function (chunk) {
+    console.log(chunk);
+  });
+  */
+});
+
+// print error
+req.on('error', function(e) {
+  console.log('problem with request: ' + e.message);
+});
+
+// write data to request body
+req.write(`{{ data.replace("`","\\`") or '' }}`);
+
+// send request
+req.end();
