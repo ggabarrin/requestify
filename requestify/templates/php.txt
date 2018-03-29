@@ -1,6 +1,7 @@
 <?php
 
 // headers
+{% set cookie_header = headers.pop('cookie', None) %}
 $headers = array(
 {% for header in headers.items() %} array('{{ header[0] }}', '{{ header[1] }}'),
 {% endfor %});

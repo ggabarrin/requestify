@@ -1,6 +1,7 @@
 import requests
 
 # Headers
+{% set cookie_header = headers.pop('cookie', None) %}
 headers = {
 {% for header_name, header_value in headers.iteritems() %}    '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
 {% endfor %}}
