@@ -12,7 +12,7 @@ class HTTPRequest(BaseHTTPRequestHandler):
         self.headers = dict(self.headers)
         # Data
         try:
-            self.data = raw_http_request[raw_http_request.index("\n\n")+2:]
+            self.data = raw_http_request[raw_http_request.index("\n\n")+2:].rstrip()
         except ValueError:
             self.data = None
 
