@@ -18,7 +18,7 @@ class HTTPRequest(BaseHTTPRequestHandler):
 
         # Cookies
         self.cookies = {}
-        raw_cookies = self.headers.pop("cookie", None)
+        raw_cookies = self.headers.get("cookie")
         if raw_cookies:
             for raw_cookie in raw_cookies.split(";"):
                 cookie_parts = raw_cookie.split("=")
