@@ -10,15 +10,15 @@ from http_request import HTTPRequest
 LANGUAGES = {
     "python": {
         "description": "Python script using 'requests' module",
-        "template_file": "python.txt",
+        "template_file": "python.j2",
     },
     "nodejs": {
         "description": "Node.js script using 'request' module",
-        "template_file": "nodejs.txt",
+        "template_file": "nodejs.j2",
     },
     "php": {
         "description": "PHP script",
-        "template_file": "php.txt",
+        "template_file": "php.j2",
     },
 }
 SEPARATOR = "#" * 40
