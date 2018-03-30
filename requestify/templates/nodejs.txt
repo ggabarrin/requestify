@@ -1,39 +1,29 @@
-{{ scheme }} = require('{{ scheme }}')
+var request = require("request");
 
-// prepare headers
-# Headers
+// headers
 headers = {
 {% for header_name, header_value in headers.iteritems() %}  '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
 {% endfor %}}
 
-// prepare request
-var options = {
-  host: '{{ host }}',
-  port: {{ port }},
-  path: '{{ uri }}',
+// cookies
+var jar = request.jar();
+{% for cookie_name, cookie_value in cookies.iteritems() %}
+{% set cookie_name = cookie_name.replace("'","\\'") %}
+{% set cookie_value =cookie_value.replace("'","\\'") %}
+jar.add(request.cookie('{{ cookie_name }}={{ cookie_value }}'));
+{% endfor %}
+
+// data
+var data = `{{ data.replace("`","\\`") or '' }}`;
+
+// prepare and send request
+request({
+  uri: '{{ scheme }}://{{ host }}:{{ port }}{{ uri }}',
   method: '{{ method }}',
-  headers: headers
-};
-
-// callback function for response
-var req = {{ scheme }}.request(options, function(res) {
-  // console.log(res.statusCode);
-
-  /*
-  res.setEncoding('utf8');
-  res.on('data', function (chunk) {
-    console.log(chunk);
-  });
-  */
+  headers: headers,
+  body: data,
+  jar: jar,
+}, function(error, response, body) {
+  // console.log(response);
+  // console.log(body);
 });
-
-// print error
-req.on('error', function(e) {
-  console.log('problem with request: ' + e.message);
-});
-
-// write data to request body
-req.write(`{{ data.replace("`","\\`") or '' }}`);
-
-// send request
-req.end();
