@@ -35,15 +35,59 @@ def generate_request_code(request, selected_template):
         loader=PackageLoader('requestify', 'templates'),
     )
     template = env.get_template(selected_template)
+
+    # Retrieve scheme, host and port
+    if request.path.index("/") == 0:  # Relative URI
+        print "[*] Relative URI detected. Please enter scheme, hostname and port to generate URL"
+        host_header = request.headers.get("host", None)
+        port = None
+        if host_header:
+            if ":" not in host_header:
+                host = host_header
+            else:
+                host = host_header.split(":")[0]
+                port = int(host_header.split(":")[1])
+
+        scheme = raw_input("[+] Scheme (http/https): ")
+        if host:
+            hostname_input = raw_input("[+] Hostname '{}' detected in 'Host' header. Use this hostname? [Y/n] ".format(host))
+            if hostname_input == "n" or hostname_input == "no":
+                host = None
+
+        if not host:
+            host = raw_input("[+] Enter hostname (e.g. www.wikipedia.org): ")
+
+        if port:
+            port_input = raw_input("[+] Port '{}' detected in 'Host' header. Use this port? [Y/n] ".format(port))
+            if port_input == "n" or port_input == "no":
+                port = None
+
+        if not port:
+            port = int(raw_input("[+] Enter port (e.g. 80, 443, ..): "))
+
+    else:  # Absolute URI
+        parsed_url = urlparse(request.path)
+        scheme = parsed_url.scheme
+        host = parsed_url.hostname
+        port = parsed_url.port
+        if not port:
+            if scheme == "http":
+                port = 80
+            elif scheme == "https":
+                port = 443
+        request.path = parsed_url.path
+        if parsed_url.query:
+            request.path += "?{}".format(parsed_url.query)
+
     return template.render(
         headers=request.headers,
         data=request.data,
         cookies=request.cookies,
         method=request.command,
-        scheme=request.scheme,
-        host=request.host,
-        port=request.port,
         uri=request.path,
+        scheme=scheme,
+        host=host,
+        port=port,
     )
 
 
