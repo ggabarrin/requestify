@@ -6,6 +6,7 @@ Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 44
+Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 DNT: 1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
