@@ -39,14 +39,15 @@ def generate_request_code(request, selected_template):
     # Retrieve scheme, host and port
     if request.path.index("/") == 0:  # Relative URI
         print "[*] Relative URI detected. Please enter scheme, hostname and port to generate URL"
-        host_header = request.headers.get("host", None)
+        host = None
         port = None
-        if host_header:
-            if ":" not in host_header:
-                host = host_header
+        host_header_value = request.headers.get("host", None)
+        if host_header_value:
+            if ":" not in host_header_value:
+                host = host_header_value
             else:
-                host = host_header.split(":")[0]
-                port = int(host_header.split(":")[1])
+                host = host_header_value.split(":")[0]
+                port = int(host_header_value.split(":")[1])
 
         scheme = raw_input("[+] Scheme (http/https): ")
         if host:
