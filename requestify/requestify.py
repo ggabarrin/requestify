@@ -3,6 +3,7 @@ import optparse
 import os
 import sys
 from jinja2 import Environment, PackageLoader
+from urlparse import urlparse
 
 from http_request import HTTPRequest
 
