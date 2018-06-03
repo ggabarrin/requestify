@@ -1,22 +1,25 @@
 <?php
 
 // headers
-{% set cookie_header = headers.pop('cookie', None) %}
+{%- set cookie_header = headers.pop('cookie', None) %}
 $headers = array(
-{% for header in headers.items() %} array('{{ header[0] }}', '{{ header[1] }}'),
-{% endfor %});
+{%- for header in headers.items() %}
+    array('{{ header[0] }}', '{{ header[1] }}'),
+{%- endfor %}
+);
 
 // data
-{% if data != None %}
+{%- if data != None %}
 $data = "{{ data.replace("\\","\\\\").replace('"','\\"') }}";
-{% else %}
+{%- else %}
 $data = "";
-{% endif %}
+{%- endif %}
 
 // cookies
 $cookies = array(
-{% for cookie in cookies.items() %} array('{{ cookie[0] }}', '{{ cookie[1] }}'),
-{% endfor %}
+{%- for cookie in cookies.items() %}
+    array('{{ cookie[0] }}', '{{ cookie[1] }}'),
+{%- endfor %}
 );
 
 // prepare and send request
@@ -27,10 +30,11 @@ $r->addCookies($cookies);
 
 try {
     $r->send();
-    //echo $r->getResponseCode();
-    //echo $r->getResponseBody());
+    // echo $r->getResponseCode();
+    // echo $r->getResponseBody();
+    // echo $r->getRequestHeaders();
 } catch (HttpException $ex) {
-    echo $ex;
+    // echo $ex;
 }
 
 ?>

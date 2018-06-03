@@ -2,19 +2,25 @@ var request = require("request");
 
 // headers
 headers = {
-{% for header_name, header_value in headers.iteritems() %}  '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
-{% endfor %}}
+{%- for header_name, header_value in headers.iteritems() %}
+  '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
+{%- endfor %}
+}
 
 // cookies
 var jar = request.jar();
-{% for cookie_name, cookie_value in cookies.iteritems() %}
-{% set cookie_name = cookie_name.replace("'","\\'") %}
-{% set cookie_value =cookie_value.replace("'","\\'") %}
+{%- for cookie_name, cookie_value in cookies.iteritems() %}
+{%- set cookie_name = cookie_name.replace("'","\\'") %}
+{%- set cookie_value = cookie_value.replace("'","\\'") %}
 jar.add(request.cookie('{{ cookie_name }}={{ cookie_value }}'));
-{% endfor %}
+{%- endfor %}
 
 // data
-var data = `{{ data.replace("`","\\`") or '' }}`;
+{%- if data != None %}
+var data = `{{ data.replace("`","\\`") }}`;
+{%- else %}
+var data = null;
+{%- endif %}
 
 // prepare and send request
 request({
@@ -24,6 +30,7 @@ request({
   body: data,
   jar: jar,
 }, function(error, response, body) {
-  // console.log(response);
+  // console.log(response.status_code);
   // console.log(body);
+  // console.log(response.headers)
 });

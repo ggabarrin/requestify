@@ -1,3 +1,4 @@
+
 # requestify
 
 Requestify parses a raw HTTP request and generates source code in different languages (templates) that makes the parsed request.
@@ -101,6 +102,9 @@ req = requests.Request(
 prepared_req = req.prepare()
 session = requests.Session()
 resp = session.send(prepared_req)
+# print resp.status_code
+# print resp.text
+# print resp.headers
 ```
 
 ### Parse POST request and generate node.js script
@@ -120,6 +124,7 @@ Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 44
+Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 DNT: 1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
@@ -142,13 +147,15 @@ headers = {
   'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0',
   'dnt': '1',
   'connection': 'keep-alive',
+  'cookie': 'yummy_cookie=choco; tasty_cookie=strawberry',
   'upgrade-insecure-requests': '1',
   'content-type': 'application/x-www-form-urlencoded',
 }
 
 // cookies
 var jar = request.jar();
-
+jar.add(request.cookie('yummy_cookie=choco'));
+jar.add(request.cookie('tasty_cookie=strawberry'));
 
 // data
 var data = `user=the_user&password=super_secure_password`;
@@ -161,7 +168,8 @@ request({
   body: data,
   jar: jar,
 }, function(error, response, body) {
-  // console.log(response);
+  // console.log(response.status_code);
   // console.log(body);
+  // console.log(response.headers)
 });
 ```
