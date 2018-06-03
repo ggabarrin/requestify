@@ -173,3 +173,15 @@ request({
   // console.log(response.headers)
 });
 ```
+
+## Contributing
+
+We welcome contributions to requestify! These are the many ways you can help:
+
+- Submit patches and features
+- Report bugs
+- Add templates for your favorite languages
+
+## License
+
+Requestify is licensed under a [MIT License](LICENSE).
