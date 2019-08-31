@@ -6,7 +6,8 @@ from requestify.http_request import HTTPRequest
 class HTTPRequestTest(unittest.TestCase):
 
     def setUp(self):
-        raw_http_request = "".join(open("requestify/examples/post.txt", "r").readlines())
+        raw_http_request = ''.join(
+            open('requestify/examples/post.txt', 'r').readlines())
         self.http_request = HTTPRequest(raw_http_request)
 
     def test_headers(self):
@@ -25,7 +26,7 @@ class HTTPRequestTest(unittest.TestCase):
         }
 
     def test_data(self):
-        assert self.http_request.data == "user=the_user&password=super_secure_password"
+        assert self.http_request.data == 'user=the_user&password=super_secure_password'
 
     def test_cookies(self):
         assert self.http_request.cookies == {
@@ -34,7 +35,7 @@ class HTTPRequestTest(unittest.TestCase):
         }
 
     def test_method(self):
-        assert self.http_request.command == "POST"
+        assert self.http_request.command == 'POST'
 
     def test_path(self):
-        assert self.http_request.path == "/login"
+        assert self.http_request.path == '/login'

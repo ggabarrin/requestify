@@ -1,3 +1,5 @@
+from json import load
+from urlparse import parse_qsl
 from BaseHTTPServer import BaseHTTPRequestHandler
 from StringIO import StringIO
 
@@ -11,18 +13,19 @@ class HTTPRequest(BaseHTTPRequestHandler):
         self.headers = dict(self.headers)
         # Data
         try:
-            self.data = raw_http_request[raw_http_request.index("\n\n")+2:].rstrip()
+            self.data = raw_http_request[raw_http_request.index(
+                '\n\n')+2:].rstrip()
         except ValueError:
             self.data = None
 
         # Cookies
         self.cookies = {}
-        raw_cookies = self.headers.get("cookie")
+        raw_cookies = self.headers.get('cookie')
         if raw_cookies:
-            for raw_cookie in raw_cookies.split(";"):
-                cookie_parts = raw_cookie.split("=")
+            for raw_cookie in raw_cookies.split(';'):
+                cookie_parts = raw_cookie.split('=')
                 cookie_name = cookie_parts[0].strip()
-                cookie_value = "".join(cookie_parts[1:]).strip()
+                cookie_value = ''.join(cookie_parts[1:]).strip()
                 self.cookies[cookie_name] = cookie_value
 
     def send_error(self, code, message):

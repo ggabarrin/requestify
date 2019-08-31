@@ -15,7 +15,7 @@ setup(
     packages=['requestify'],
     include_package_data=True,
     platforms='any',
-    classifiers = [
+    classifiers=[
         'Programming Language :: Python',
         'Natural Language :: English',
         'Intended Audience :: Developers',

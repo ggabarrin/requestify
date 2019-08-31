@@ -7,4 +7,3 @@ Accept-Encoding: gzip, deflate
 DNT: 1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
-  
