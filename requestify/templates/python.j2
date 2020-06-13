@@ -1,5 +1,6 @@
 import requests
 
+
 # Headers
 {%- set cookie_header = headers.pop('cookie', None) %}
 headers = {
@@ -9,7 +10,7 @@ headers = {
 }
 
 # Data
-data = r"""{{ data or '' }}"""
+data = r'''{{ data or '' }}'''
 
 # Cookies
 cookies = {
@@ -20,8 +21,8 @@ cookies = {
 
 # Prepare and send request
 req = requests.Request(
-    method="{{ method }}",
-    url="{{ scheme }}://{{ host }}:{{ port }}{{ uri }}",
+    method='{{ method }}',
+    url='{{ scheme }}://{{ host }}:{{ port }}{{ uri }}',
     headers=headers,
     data=data,
     cookies=cookies,
