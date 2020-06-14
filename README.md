@@ -72,20 +72,21 @@ Generated python script:
 ```py
 import requests
 
+
 # Headers
 headers = {
-    'accept-language': 'en-US,en;q=0.5',
-    'accept-encoding': 'gzip, deflate',
-    'host': 'localhost:8080',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'user-agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0',
-    'dnt': '1',
-    'connection': 'keep-alive',
-    'upgrade-insecure-requests': '1',
+    'Host': 'localhost:8080',
+    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate',
+    'DNT': '1',
+    'Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1',
 }
 
 # Data
-data = r""""""
+data = r''''''
 
 # Cookies
 cookies = {
@@ -93,8 +94,8 @@ cookies = {
 
 # Prepare and send request
 req = requests.Request(
-    method="GET",
-    url="http://localhost:8080/",
+    method='GET',
+    url='http://localhost:8080/',
     headers=headers,
     data=data,
     cookies=cookies,
@@ -102,9 +103,9 @@ req = requests.Request(
 prepared_req = req.prepare()
 session = requests.Session()
 resp = session.send(prepared_req)
-# print resp.status_code
-# print resp.text
-# print resp.headers
+# print(resp.status_code)
+# print(resp.text)
+# print(resp.headers)
 ```
 
 ### Parse POST request and generate node.js script
