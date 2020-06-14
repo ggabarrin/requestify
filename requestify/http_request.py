@@ -1,13 +1,14 @@
+from http.server import BaseHTTPRequestHandler
+from io import BytesIO
 from json import load
-from urlparse import parse_qsl
-from BaseHTTPServer import BaseHTTPRequestHandler
-from StringIO import StringIO
+from urllib.parse import parse_qsl
 
 
 class HTTPRequest(BaseHTTPRequestHandler):
     def __init__(self, raw_http_request):
-        self.rfile = StringIO(raw_http_request)
+        self.rfile = BytesIO(raw_http_request.encode('utf-8'))
         self.raw_requestline = self.rfile.readline()
+        self.error_code = self.error_message = None
         self.parse_request()
 
         self.headers = dict(self.headers)

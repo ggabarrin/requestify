@@ -2,14 +2,14 @@ var request = require("request");
 
 // headers
 headers = {
-{%- for header_name, header_value in headers.iteritems() %}
+{%- for header_name, header_value in headers.items() %}
   '{{ header_name.replace("'","\\'") }}': '{{ header_value.replace("'","\\'") }}',
 {%- endfor %}
 }
 
 // cookies
 var jar = request.jar();
-{%- for cookie_name, cookie_value in cookies.iteritems() %}
+{%- for cookie_name, cookie_value in cookies.items() %}
 {%- set cookie_name = cookie_name.replace("'","\\'") %}
 {%- set cookie_value = cookie_value.replace("'","\\'") %}
 jar.add(request.cookie('{{ cookie_name }}={{ cookie_value }}'));
